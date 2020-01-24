@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <b-card class="text-center" style="max-width:300px; opacity:0.7; border:none">
+    <b-card class="text-center" style="max-width:480px; opacity:0.7; border:none">
       <b-form @submit.stop.prevent>
         <label for="feedback-user">Username</label>
         <b-input v-model="username" :state="validation" id="feedback-user"></b-input>
