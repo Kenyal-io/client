@@ -19,8 +19,11 @@ export default new Vuex.Store({
     },
     tiles: [],
     ROLL_STATE: 0,
-    OBSTACLE_STATE: 1,
-    MOVE_STATE: 1
+    OBSTACLE_STATE: 2,
+    MOVE_STATE: 1,
+    isConnected: false,
+    socketMessage: null,
+    rolled: false
   },
   mutations: {
     setTile: (state, { x, y, wh, index, next, obstacle }) => {
@@ -46,6 +49,9 @@ export default new Vuex.Store({
     roll: (state) => {
       let r = Math.floor(Math.random() * 6) + 1
       state.tile.next = state.player.spot + r
+    },
+    setPlayerPos: (state, diceNum) => {
+      state.tile.next = state.player.spot + diceNum
     }
   },
   actions: {

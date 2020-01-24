@@ -14,26 +14,26 @@
 
 <script>
 // @ is an alias to /src
-import chatForm from "@/components/chatForm.vue";
-import FormName from "@/components/formName.vue";
+// import chatForm from '@/components/chatForm.vue'
+import FormName from '@/components/formName.vue'
 
 export default {
-  name: "home",
-  data() {
+  name: 'home',
+  data () {
     return {
       submit: true
-    };
+    }
   },
   components: {
-    FormName,
-    chatForm
+    FormName
+    // chatForm,
   },
   methods: {
-    userJoin(username) {
-      this.submit = false;
+    userJoin (username) {
+      this.submit = false
     }
   }
-};
+}
 </script>
 
 <style scoped>

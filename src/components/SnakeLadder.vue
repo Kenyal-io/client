@@ -5,24 +5,33 @@
                 <vue-p5 v-on="{setup, draw}"></vue-p5>
             </b-col>
         </b-row>
+        <b-row>
+          <b-col>
+            <dice-roll @rolledDice="changePlayerPos($event)"></dice-roll>
+          </b-col>
+        </b-row>
     </b-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import VueP5 from 'vue-p5'
+import DiceRoll from '@/components/DiceRoll.vue'
 
 export default {
   components: {
-    VueP5
+    VueP5,
+    DiceRoll
   },
-  computed: mapState([
-  // map this.count to store.state.count
-    'player', 'tiles', 'tile', 'ROLL_STATE', 'PREVIEW_STATE', 'MOVE_STATE'
-  ]),
+  computed: {
+    ...mapState([
+      'player', 'tiles', 'tile', 'ROLL_STATE', 'OBSTACLE_STATE', 'MOVE_STATE', 'rolled'
+    ])
+  },
   data () {
     return {
-      state: null
+      state: null,
+      dice: 0
     }
   },
   created () {
@@ -31,8 +40,8 @@ export default {
   methods: {
     showPlayer (sk, tiles) {
       let current = tiles[this.player.spot]
-      sk.fill(255)
       let center = this.getCenter(current)
+      sk.fill(255)
       sk.ellipse(center[0], center[1], 32)
     },
     getCenter (tiles) {
@@ -46,7 +55,7 @@ export default {
           let myCenter = this.getCenter(tile)
           let nextCenter = this.getCenter(this.tiles[tile.index + tile.obstacle])
           sk.strokeWeight(4)
-          tile.obstacle < 0 ? sk.stroke(255) : sk.stroke(0)
+          tile.obstacle < 0 ? sk.stroke('red') : sk.stroke('green')
           sk.line(myCenter[0], myCenter[1], nextCenter[0], nextCenter[1])
         }
       }
@@ -79,10 +88,13 @@ export default {
       let tile = this.tiles[this.player.spot]
       return (tile && tile.obstacle !== 0)
     },
+    changePlayerPos (diceNum) {
+      this.dice = diceNum
+    },
     setup (sk) {
-      sk.resizeCanvas(800, 800)
+      sk.resizeCanvas(600, 600)
 
-      let resolution = 80
+      let resolution = 60
       let cols = sk.width / resolution
       let rows = sk.height / resolution
 
@@ -140,9 +152,14 @@ export default {
       this.showObstacle(sk)
 
       if (this.state === this.ROLL_STATE) {
-        this.$store.commit('roll')
-        this.showPreview(sk)
-        this.state = this.MOVE_STATE
+        // this.$store.commit('roll')
+        this.$store.commit('setPlayerPos', this.dice)
+
+        if (this.dice > 0) {
+          this.showPreview(sk)
+          this.state = this.MOVE_STATE
+          this.dice = 0
+        }
       } else if (this.state === this.MOVE_STATE) {
         this.movePlayer()
         if (this.isObstacle()) {
