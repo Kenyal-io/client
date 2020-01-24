@@ -92,7 +92,8 @@ export default {
       this.dice = diceNum
     },
     setup (sk) {
-      sk.resizeCanvas(600, 600)
+      // sk.resizeCanvas(600, 600)
+      sk.createCanvas(600, 600)
 
       let resolution = 60
       let cols = sk.width / resolution
@@ -142,7 +143,7 @@ export default {
       // done generate obstacle
     },
     draw (sk) {
-      sk.frameRate(10)
+      sk.frameRate(1)
       sk.background('lightgreen')
 
       for (const tile of this.tiles) {
