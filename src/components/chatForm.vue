@@ -33,6 +33,7 @@
 
 <script>
 import io from "socket.io-client";
+
 export default {
   props: ["username"],
   data() {
@@ -48,7 +49,7 @@ export default {
       e.preventDefault();
 
       this.socket.emit("SEND_MESSAGE", {
-        user: this.username,
+        user: this.user,
         message: this.message
       });
       this.message = "";

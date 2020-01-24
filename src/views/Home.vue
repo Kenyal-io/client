@@ -7,6 +7,7 @@
       <div class="col-lg-4">
         <formName @newUser="userJoin"></formName>
       </div>
+      <!-- <chatForm></chatForm> -->
     </div>
   </div>
 </template>
@@ -24,7 +25,8 @@ export default {
     };
   },
   components: {
-    FormName
+    FormName,
+    chatForm
   },
   methods: {
     userJoin(username) {
