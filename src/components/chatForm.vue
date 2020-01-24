@@ -17,10 +17,10 @@
     </div>
     <div class="card-footer">
       <form @submit.prevent="sendMessage">
-        <div class="gorm-group">
+        <!-- <div class="gorm-group">
           <label for="user">User:</label>
           <input type="text" v-model="user" class="form-control" />
-        </div>
+        </div> -->
         <div class="gorm-group pb-3">
           <label for="message">Message:</label>
           <input type="text" v-model="message" class="form-control" />
@@ -32,36 +32,36 @@
 </template>
 
 <script>
-import io from "socket.io-client";
+import io from 'socket.io-client'
 
 export default {
-  props: ["username"],
-  data() {
+  props: ['username'],
+  data () {
     return {
-      user: "",
-      message: "",
+      user: localStorage.username,
+      message: '',
       messages: [],
-      socket: io("localhost:3000")
-    };
-  },
-  methods: {
-    sendMessage(e) {
-      e.preventDefault();
-
-      this.socket.emit("SEND_MESSAGE", {
-        user: this.user,
-        message: this.message
-      });
-      this.message = "";
+      socket: io('localhost:3000')
     }
   },
-  mounted() {
-    this.socket.on("MESSAGE", data => {
-      this.messages = [...this.messages, data];
+  methods: {
+    sendMessage (e) {
+      e.preventDefault()
+
+      this.socket.emit('SEND_MESSAGE', {
+        user: this.user,
+        message: this.message
+      })
+      this.message = ''
+    }
+  },
+  mounted () {
+    this.socket.on('MESSAGE', data => {
+      this.messages = [...this.messages, data]
       // you can also do this.messages.push(data)
-    });
+    })
   }
-};
+}
 </script>
 
 <style>

@@ -13,49 +13,50 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
-  data() {
+  data () {
     return {
-      username: ""
-    };
+      username: ''
+    }
   },
   computed: {
-    validation() {
-      return this.username.length > 4 && this.username.length < 13;
+    validation () {
+      return this.username.length > 4 && this.username.length < 13
     }
   },
   methods: {
-    submit() {
+    submit () {
       axios({
-        url: "http://localhost:3000/users",
-        method: "POST",
+        url: 'http://localhost:3000/users',
+        method: 'POST',
         data: {
           username: this.username
         }
       })
         .then(({ data, token }) => {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("id", data.user._id);
-          localStorage.setItem("username", data.user.username);
-          localStorage.setItem("room", data.user.room);
-          this.$emit("newUser", this.username);
-          Swal.fire(
-            "Welcome Back",
-            "Success Login " + data.user.username,
-            "success"
-          );
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('id', data.user._id)
+          localStorage.setItem('username', data.user.username)
+          localStorage.setItem('room', data.user.room)
+          this.$emit('newUser', this.username)
+          this.$swal(
+            'Welcome Back',
+            'Success Login ' + data.user.username,
+            'success'
+          )
         })
         .catch(err => {
-          Swal.fire({
-            icon: "error",
-            title: "message : " + err.message
-          });
-        });
+          this.$swal({
+            icon: 'error',
+            title: 'message : ' + err.message
+          })
+        })
+      this.$router.push({ path: '/rooms' })
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
